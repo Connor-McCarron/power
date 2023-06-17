@@ -4,29 +4,19 @@ const fs = require('fs');
 function generateSegmentWeights() {
   const segmentWeights = Array(12).fill(0);
   const populatedSegments = [];
-  const targetSegments = [];
+  const numPopulatedSegments = Math.floor(Math.random() * 5) + 1; // Random number of populated segments between 1 and 5
 
-  while (targetSegments.length < 2) {
+  while (populatedSegments.length < numPopulatedSegments) {
     const segment = Math.floor(Math.random() * 12);
-    if (!targetSegments.includes(segment)) {
-      targetSegments.push(segment);
+    if (!populatedSegments.includes(segment)) {
+      populatedSegments.push(segment);
     }
   }
 
-  targetSegments.forEach((segment) => {
+  populatedSegments.forEach((segment) => {
     const weight = Math.random() * 0.15 + 0.05; // Random weight between 0.05-0.2
     segmentWeights[segment] = weight;
-    populatedSegments.push(segment);
   });
-
-  const remainingSegments = [...Array(12).keys()].filter((segment) => !populatedSegments.includes(segment));
-
-  while (populatedSegments.length < 5) {
-    const segment = remainingSegments[Math.floor(Math.random() * remainingSegments.length)];
-    const weight = Math.random() * 0.1 + 0.01; // Random weight between 0.01-0.1
-    segmentWeights[segment] = weight;
-    populatedSegments.push(segment);
-  }
 
   return segmentWeights;
 }
@@ -54,8 +44,8 @@ function generateDot(startAngle, endAngle, centerX, centerY, radius, innerRadius
 
 function generateImage(outputFilePath) {
   // Randomly generate variables within defined ranges
-  const numDots = Math.floor(Math.random() * 201) + 100; // Range: 100-300
-  const clustering = 0.9;
+  const numDots = Math.floor(Math.random() * 100) + Math.floor(Math.random() * 100) + 10; // Range: 10-300
+  const clustering = 0.999999;
   const segmentWeights = generateSegmentWeights();
 
   // Create a canvas instance
@@ -102,10 +92,10 @@ function generateImage(outputFilePath) {
 }
 
 // Generate multiple images with different variable inputs
-const numImages = 3; // Number of images to generate
+const numImages = 50; // Number of images to generate
 
 for (let i = 0; i < numImages; i++) {
-  const outputFilePath = `image${i}.png`; // Output file path for each image
+  const outputFilePath = `images/image${i}.png`; // Output file path for each image
   generateImage(outputFilePath);
   console.log(`Image ${i + 1} generated and saved successfully!`);
 }
